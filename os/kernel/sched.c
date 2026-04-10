@@ -25,7 +25,7 @@ static uint8_t os_task_priority[MAX_TASKS] = {255};
 static int _top = 0;
 static int _current = -1;
 
-static void w_mscratch(reg_t x)
+static void __attribute__((unused)) w_mscratch(reg_t x)
 {
 	asm volatile("csrw mscratch, %0" : : "r" (x));
 }
@@ -59,7 +59,8 @@ int task_create(void (*entry)(void *), void *param, uint8_t priority)
 {
 	if (_top < MAX_TASKS) {
 		ctx_tasks[_top].sp		= (reg_t) &task_stack[_top][STACK_SIZE];
-		ctx_tasks[_top].ra 		= (reg_t) os_task_wrapper;
+		ctx_tasks[_top].mepc	= (reg_t) os_task_wrapper;
+		ctx_tasks[_top].ra		= (reg_t) os_task_wrapper;
 		ctx_tasks[_top].a0		= (reg_t) entry;
 		ctx_tasks[_top].a1		= (reg_t) param;
 		os_task_priority[_top]	= priority;
@@ -86,7 +87,7 @@ void os_main(void)
 	os_switch_to(to);
 }
 
-void os_schedule()
+void os_schedule(void)
 {
 	if (_top <= 0) {
 		os_panic("Num of task should be greater than zero!");
@@ -121,5 +122,6 @@ void os_schedule()
  */
 void os_task_yield(void)
 {
-	os_schedule();
+	sw_setpend();
+	// os_schedule();
 }

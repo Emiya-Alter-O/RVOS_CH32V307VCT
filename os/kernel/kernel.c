@@ -1,6 +1,7 @@
 #include "os.h"
+#include "ch32v30x.h"
 
-extern void USART_Printf_Init(uint32_t baudrate);
+// extern void USART_Printf_Init(uint32_t baudrate);
 extern void Delay_Init(void);
 
 void start_kernel(void)
@@ -11,6 +12,8 @@ void start_kernel(void)
 	Delay_Init();
 
 	os_heap_init();
+
+	timer_init();
 
 	os_sched_init();
 

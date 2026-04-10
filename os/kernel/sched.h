@@ -36,11 +36,12 @@ struct context {
 	reg_t t4;
 	reg_t t5;
 	reg_t t6;
+	reg_t mepc;
 };
 
 extern void os_sched_init(void);
 extern void os_main(void);
 extern void os_task_yield(void);
-extern void os_main(void);
+extern void os_schedule(void);
 
 #endif /* __SCHED_H__ */

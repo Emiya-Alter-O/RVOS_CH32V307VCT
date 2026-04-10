@@ -18,4 +18,7 @@
 /* task management */
 #include "sched.h"
 
+/* timer management */
+#include "timer.h"
+
 #endif /* __OS_H__ */

@@ -97,10 +97,19 @@
 os_switch:
     reg_save 	a0
 
+	csrr    	t0, mepc
+    STORE   	t0, 31*SIZE_REG(a0)
+
+	li   t0,    0x20
+	csrs 0x804, t0
+
+	LOAD    	t0, 31*SIZE_REG(a1)
+    csrw    	mepc, t0
+
     mv			t6,a1
     reg_restore t6
 
-    ret
+    mret
 	
 .globl os_switch_to
 .balign 4
