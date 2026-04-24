@@ -84,7 +84,7 @@ void os_main(void)
 	task_create(user_task1, &_current, 100);
 
 	struct context  *to = &(ctx_tasks[0]);
-	os_switch_to(to);
+	os_switch(to, to);
 }
 
 void os_schedule(void)
@@ -96,9 +96,10 @@ void os_schedule(void)
 
 	uint8_t top_priority 		= 255;
 	uint8_t top_priority_index 	= 0;
-	struct context *from, *to;
+	// struct context *from, *to;
+	struct context *to;
 
-	from = &(ctx_tasks[_current]);
+	// from = &(ctx_tasks[_current]);
 
 	for(uint8_t i = 0; i < _top; i++)
 	{
@@ -112,7 +113,7 @@ void os_schedule(void)
 
 	_current = top_priority_index;
 	to = &(ctx_tasks[_current]);
-	os_switch(from, to);
+	os_switch_to(to);
 }
 
 /*

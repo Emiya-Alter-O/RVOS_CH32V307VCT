@@ -5,11 +5,12 @@
 		},
 		{
 			"name": "RVOS_CH32V307VCT",
-			"path": "E:\\WCH\\RVOS_CH32V307VCT"
+			"path": "E:\\Documents\\WCH\\project\\RVOS_CH32V307VCT"
 		}
 	],
 	"settings": {
 		"mrs.workspace.type": "project",
+		"mrs.init.arg": "",
 		"files.associations": {
 			"*.c": "c",
 			"*.h": "cpp",

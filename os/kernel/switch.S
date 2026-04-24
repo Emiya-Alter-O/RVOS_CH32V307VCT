@@ -42,8 +42,6 @@
 	STORE t3,  27*SIZE_REG(\base)
 	STORE t4,  28*SIZE_REG(\base)
 	STORE t5,  29*SIZE_REG(\base)
-	STORE t6,  30*SIZE_REG(\base)
-
 .endm
 
 # restore all General-Purpose(GP) registers from the context
@@ -92,31 +90,68 @@
 
 .text
 
+.global SW_Handler
+.align 2
+SW_Handler:
+	# save context(registers).
+	csrrw		t6, mscratch, t6	# swap t6 and mscratch
+	reg_save 	t6
+
+	# Save the actual t6 register, which we swapped into
+	# mscratch
+	mv			t5, t6			# t5 points to the context of current task
+	csrr		t6, mscratch		# read t6 back from mscratch
+	STORE		t6, 30*SIZE_REG(t5)	# save t6 with t5 as base
+
+	# save mepc to context of current task
+	csrr		a0, mepc
+	STORE		a0, 31*SIZE_REG(t5)
+
+	call		sw_clearpend
+	mret
+
 .globl os_switch
 .balign 4
 os_switch:
-    reg_save 	a0
+    // reg_save 	a0
 
-	csrr    	t0, mepc
-    STORE   	t0, 31*SIZE_REG(a0)
+	// csrr    	t0, mepc
+    // STORE   	t0, 31*SIZE_REG(a0)
 
-	li   t0,    0x20
-	csrs 0x804, t0
+	// li   t0,    0x20
+	// csrs 0x804, t0
 
-	LOAD    	t0, 31*SIZE_REG(a1)
-    csrw    	mepc, t0
+	// LOAD    	t0, 31*SIZE_REG(a1)
+    // csrw    	mepc, t0
 
-    mv			t6,a1
+    // mv			t6,a1
+    // reg_restore t6
+
+    // mret
+	mv	        t6, a0
     reg_restore t6
 
-    mret
+    ret
 	
 .globl os_switch_to
 .balign 4
 os_switch_to:
-    mv	        t6, a0
-    reg_restore t6
 
-    ret
+	li   t0,    0x20
+	csrs 0x804, t0
+
+	csrw	mscratch, a0
+	# set mepc to the pc of the next task
+	LOAD	a1, 31*SIZE_REG(a0)
+	csrw	mepc, a1
+
+	# Restore all GP registers
+	# Use t6 to point to the context of the new task
+	mv	t6, a0
+	reg_restore t6
+
+	# Do actual context switching.
+	# Notice this will enable global interrupt
+	mret
 .end
 

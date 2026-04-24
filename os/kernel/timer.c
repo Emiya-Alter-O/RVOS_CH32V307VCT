@@ -18,6 +18,7 @@ static uint32_t _SysTick_Config(uint32_t ticks)
 void sw_clearpend(void)
 {
     SysTick->CTLR &= ~(1<<31);
+    os_schedule();
 }
 
 void sw_setpend(void)
@@ -44,10 +45,10 @@ void SysTick_Handler(void)
 
 }
 
-void SW_Handler(void) __attribute__((interrupt(/*"WCH-Interrupt-fast"*/)));
-void SW_Handler(void)
-{
-    sw_clearpend();
-    os_schedule();
-    // os_kprintf("entry sw irq\r\n");
-}
+// void SW_Handler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
+// void SW_Handler(void)
+// {
+//     sw_clearpend();
+//     os_schedule();
+//     // os_kprintf("entry sw irq\r\n");
+// }
