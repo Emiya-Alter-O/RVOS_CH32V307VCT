@@ -42,18 +42,18 @@ void Delay_Init(void)
  */
 void Delay_Us(uint32_t n)
 {
-    uint32_t i;
+    // uint32_t i;
 
-    SysTick->SR &= ~(1 << 0);
-    i = (uint32_t)n * p_us;
+    // SysTick->SR &= ~(1 << 0);
+    // i = (uint32_t)n * p_us;
 
-    SysTick->CMP = i;
-    SysTick->CTLR |= (1 << 4);
-    SysTick->CTLR |= (1 << 5) | (1 << 0);
+    // SysTick->CMP = i;
+    // SysTick->CTLR |= (1 << 4);
+    // SysTick->CTLR |= (1 << 5) | (1 << 0);
 
-    while((SysTick->SR & (1 << 0)) != (1 << 0))
-        ;
-    SysTick->CTLR &= ~(1 << 0);
+    // while((SysTick->SR & (1 << 0)) != (1 << 0))
+    //     ;
+    // SysTick->CTLR &= ~(1 << 0);
 }
 
 /*********************************************************************
@@ -67,18 +67,18 @@ void Delay_Us(uint32_t n)
  */
 void Delay_Ms(uint32_t n)
 {
-    uint32_t i;
+    // uint32_t i;
 
-    SysTick->SR &= ~(1 << 0);
-    i = (uint32_t)n * p_ms;
+    // SysTick->SR &= ~(1 << 0);
+    // i = (uint32_t)n * p_ms;
 
-    SysTick->CMP = i;
-    SysTick->CTLR |= (1 << 4);
-    SysTick->CTLR |= (1 << 5) | (1 << 0);
+    // SysTick->CMP = i;
+    // SysTick->CTLR |= (1 << 4);
+    // SysTick->CTLR |= (1 << 5) | (1 << 0);
 
-    while((SysTick->SR & (1 << 0)) != (1 << 0))
-        ;
-    SysTick->CTLR &= ~(1 << 0);
+    // while((SysTick->SR & (1 << 0)) != (1 << 0))
+    //     ;
+    // SysTick->CTLR &= ~(1 << 0);
 }
 
 /*********************************************************************
