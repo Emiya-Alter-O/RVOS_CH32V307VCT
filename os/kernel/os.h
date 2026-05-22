@@ -21,4 +21,6 @@
 /* timer management */
 #include "timer.h"
 
+#include "lock.h"
+
 #endif /* __OS_H__ */

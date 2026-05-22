@@ -121,7 +121,9 @@ int os_kprintf(const char* s, ...)
 	int res = 0;
 	va_list vl;
 	va_start(vl, s);
+	uint32_t level = spin_lock();
 	res = os_kvprintf(s, vl);
+	spin_unlock(level);
 	va_end(vl);
 	return res;
 }

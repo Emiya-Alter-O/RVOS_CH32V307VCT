@@ -84,7 +84,7 @@ void os_main(void)
 	task_create(user_task1, &_current, 100);
 
 	struct context  *to = &(ctx_tasks[0]);
-	os_switch(to, to);
+	os_switch_to(to);
 }
 
 void os_schedule(void)
