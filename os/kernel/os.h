@@ -23,4 +23,6 @@
 
 #include "lock.h"
 
+#include "syscall.h"
+
 #endif /* __OS_H__ */

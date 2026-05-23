@@ -7,6 +7,13 @@
 - [0. Hello RVOS](#0-hello-rvos)
 - [1. 内存管理](#1-内存管理)
 - [2. 上下文切换和协作式多任务](#2上下文切换和协作式多任务)
+- [3. Trap和Exception](#3trap和exception)
+- [4. 外部设备中断](#4外部设备中断)
+- [5. 硬件定时器](#5硬件定时器)
+- [6. 抢占式多任务](#6抢占式多任务)
+- [7. 任务同步和锁](#7任务同步和锁)
+- [8. 软件定时器](#8软件定时器)
+- [9. 系统调用](#9系统调用)
 
 # 0. Hello RVOS
 在mrs生成的启动文件[startup_ch32v30x_D8C.S](Startup\startup_ch32v30x_D8C.S)中已经对芯片做了初始化配置，一般没有修改的必要，此项目进入start_kernel函数的方法是直接修改mepc，这样mret之后芯片的特权模式将会根据mstatus中的值进行变更。
@@ -179,3 +186,13 @@ os_switch_to:
 由于在进入软中断处理函数时已经保存过上下文，因此在此函数中只加载需要切换的任务的上下文，同时会关闭硬件出栈防止异常。
 
 # 7.任务同步和锁
+
+由于在运行用户任务时，cpu处于user模式，所以使用了mstatus的影子寄存器gintenr(0x800)来操作全局中断
+
+# 8.软件定时器
+
+参考[之前写的软件定时器实现](https://blog.csdn.net/weixin_44075145/article/details/152948085?fromshare=blogdetail&sharetype=blogdetail&sharerId=152948085&sharerefer=PC&sharesource=weixin_44075145&sharefrom=from_link)
+
+# 9.系统调用
+
+按照默认中断向量表实现Ecall_U_Mode_Handler函数，如果直接操作通用寄存器，注意临时关闭硬件出栈

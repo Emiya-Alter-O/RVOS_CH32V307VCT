@@ -24,7 +24,10 @@ void start_kernel(void)
 
 void user_task0(void *param)
 {
+	uint32_t r_marchid = 0;
 	os_kprintf("Task 0: Created!\n");
+	r_marchid = gethid(0x12345678);
+	os_kprintf("r_marchid : %p\r\n", r_marchid);
 	while (1) {
 		os_kprintf("Task 0: Running...\n");
 		os_delay_ms(1000);
